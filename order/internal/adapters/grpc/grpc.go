@@ -1,13 +1,24 @@
 package grpc
 
-import "github.com/marcpires/grpc/ecommerce/order/internal/ports"
+import (
+	"context"
+	"github.com/marcpires/grpc/ecommerce/order/internal/application/core/domain"
+)
 
-type Adapter struct {
-	api ports.APIPort //Core application dependency
-	port int
-	order.UnimplementedOrderServer //forward compatibility support
-}
-
-func NewAdapter(api ports.APIPort, port int) *Adapter {
-	return &Adapter{api: api, port: port}
-}
+func (a Adapter) Create(cxt context.Context, 
+	request *order.CreateOrderRequest) (*order.CreateOrderResponse, error) {
+		var orderItems []domain.OrderItem
+		for _, orderItem := range request.OrderItems {
+			orderItem = append(orderItems, domain.OrderItem{
+				ProductCode: orderItem.ProductCode,
+				UnitPrice: orderItem.UnitPrice,
+				Quantity: orderItem.Quantity,
+			})
+		}
+		newOrder := domain.NewOrder(request.UserId, orderItems)
+		result, err := a.api.PlaceOrder(newOrder)
+		if err != nil {
+			return nil, err
+		}
+		return &order.CreateOrderResponse{OrderId: result.ID}, nil
+	}
