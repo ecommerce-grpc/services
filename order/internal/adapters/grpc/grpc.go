@@ -2,6 +2,8 @@ package grpc
 
 import (
 	"context"
+
+	"github.com/marcpires/grpc/ecommerce/services/order" // service stub
 	"github.com/marcpires/grpc/ecommerce/order/internal/application/core/domain"
 )
 
