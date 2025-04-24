@@ -17,10 +17,12 @@ func (a Adapter) Create(cxt context.Context,
 				Quantity: orderItem.Quantity,
 			})
 		}
+
 		newOrder := domain.NewOrder(request.UserId, orderItems)
 		result, err := a.api.PlaceOrder(newOrder)
 		if err != nil {
 			return nil, err
 		}
+
 		return &order.CreateOrderResponse{OrderId: result.ID}, nil
 	}

@@ -33,7 +33,7 @@ type Adapter struct {
 
 // NewAdapter returns the concrete implementation of a database adapter or an error
 func NewAdapter(dataSourceUrl string) (*Adapter, error) {
-	db, openErr := gorm.Open(mysql.Open(dataSourceUrl), &gormConfig{})
+	db, openErr := gorm.Open(mysql.Open(dataSourceUrl), &gorm.Config{})
 	if openErr != nil {
 		return nil, fmt.Errorf("database connection error: %w", openErr)
 	}

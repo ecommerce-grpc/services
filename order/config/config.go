@@ -10,7 +10,7 @@ func GetEnv() string {
 	return getEnvironmentValue("ENV")
 }
 
-func GetDataSourceUrl() string {
+func GetDataSourceURL() string {
 	return getEnvironmentValue("DATA_SOURCE_URL")
 }
 
