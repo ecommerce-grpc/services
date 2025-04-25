@@ -1,0 +1,47 @@
+package payment
+
+import (
+	"context"
+
+	"github.com/marcpires/ecommerce-grpc-protos/golang/sevices/payment"
+	"github.com/marcpires/grpc/ecommerce/order/internal/application/core/domain"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+)
+
+// Adapter defines the payment adapter that handles the Payment operations
+type Adapter struct {
+	payment payment.PaymentClient
+}
+
+// NewAdapter returns a new payment Adapter using disabled TLS credentials or an error if applicable.
+func NewAdapter(paymentServiceURL string) (*Adapter, error) {
+	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
+
+	conn, err := grpc.Dial(paymentServiceURL, opts...)
+	if err != nil {
+		return nil, err
+	}
+	defer conn.Close()
+	client := payment.NewPaymentClient(conn)
+	return &Adapter{payment: client}, nil
+}
+
+// Charge handles the payment operation, implements the payment port using the payment stub
+func (a *Adapter) Charge(order *domain.Order) error {
+	_, err := a.payment.Create(context.Background(), &payment.CreatePaymentRequest{
+		UserId: order.CustomerID,
+		OrderId: order.ID,
+		TotalPrice: order.TotalPrice(),
+	})
+	return err
+}
+
+func (o *Order) TotalPrice() float32 {
+	var totalPrice float32
+	for _, orderItem := range o.OrderItems {
+		totalPrice += orderItem.UnitPrice * float32(orderItem.Quantity)
+	}
+	return totalPrice
+}
