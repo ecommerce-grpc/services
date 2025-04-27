@@ -44,6 +44,7 @@ func NewAdapter(dataSourceUrl string) (*Adapter, error) {
 	return &Adapter{db: db}, nil
 }
 
+// Get returns an Order information using the adapter instance or an error if applicable.
 func (a Adapter) Get(id string) (domain.Order, error) {
 	var orderEntity Order
 	res := a.db.First(&orderEntity, id)
@@ -65,7 +66,7 @@ func (a Adapter) Get(id string) (domain.Order, error) {
 	return order, res.Error
 }
 
-// Save save an order transaction and returns an error if applicable
+// Save saves an order transaction via adapter instance or returns an error if applicable
 func (a Adapter) Save(order *domain.Order) error {
 	var orderItems []OrderItem
 	for _, orderItem := range order.OrderItems {

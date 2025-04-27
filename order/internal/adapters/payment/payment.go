@@ -3,7 +3,7 @@ package payment
 import (
 	"context"
 
-	"github.com/marcpires/ecommerce-grpc-protos/golang/sevices/payment"
+	"github.com/marcpires/ecommerce-grp/payment"
 	"github.com/marcpires/grpc/ecommerce/order/internal/application/core/domain"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
