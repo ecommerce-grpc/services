@@ -6,14 +6,17 @@ import (
 	"strconv"
 )
 
+// GetEnv returns the environemnt the application is running.
 func GetEnv() string {
 	return getEnvironmentValue("ENV")
 }
 
+// GetDataSourceURL the connection URL for database being used.
 func GetDataSourceURL() string {
 	return getEnvironmentValue("DATA_SOURCE_URL")
 }
 
+// GetApplicationPort returns the application port being used.
 func GetApplicationPort() int {
 	portStr := getEnvironmentValue("APPLICATION_PORT")
 	port, err := strconv.Atoi(portStr)
@@ -24,6 +27,7 @@ func GetApplicationPort() int {
 	return port
 }
 
+// getEnvironementValue gets the environment variable informed.
 func getEnvironmentValue(key string) string {
 	// TODO: Implement a isEmpty function
 	if os.Getenv(key) == "" {
