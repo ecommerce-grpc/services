@@ -20,6 +20,15 @@ type Order struct {
 	CreateAt   int64       `json:"created_at"`
 }
 
+// TotalPrice computes the total order price.
+func (o *Order) TotalPrice() float32 {
+	var totalPrice float32
+	for _, orderItem := range o.OrderItems {
+		totalPrice += orderItem.UnitPrice * float32(orderItem.Quantity)
+	}
+	return totalPrice
+}
+
 // NewOrder returns the items of customer order
 func NewOrder(customerId int64, orderItems []OrderItem) Order {
 	return Order{
