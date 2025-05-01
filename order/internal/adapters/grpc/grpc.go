@@ -5,7 +5,19 @@ import (
 
 	"github.com/ecommerce-grpc/order" // service stub
 	"github.com/marcpires/grpc/ecommerce/order/internal/application/core/domain"
+	"github.com/marcpires/grpc/ecommerce/order/internal/ports"
 )
+
+type Adapter struct {
+	api                            ports.APIPort //Core application dependency
+	port                           int
+	order.UnimplementedOrderServer //forward compatibility support
+}
+
+// NewAdapter returns a gRPC adapter
+func NewAdapter(api ports.APIPort, port int) *Adapter {
+	return &Adapter{api: api, port: port}
+}
 
 // Create handles the Order request endpoint
 func (a Adapter) Create(cxt context.Context,

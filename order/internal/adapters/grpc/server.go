@@ -7,21 +7,10 @@ import (
 
 	"github.com/ecommerce-grpc/order" // service stub
 	"github.com/marcpires/grpc/ecommerce/order/config"
-	"github.com/marcpires/grpc/ecommerce/order/internal/ports"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
-type Adapter struct {
-	api                            ports.APIPort //Core application dependency
-	port                           int
-	order.UnimplementedOrderServer //forward compatibility support
-}
-
-// NewAdapter returns a gRPC adapter
-func NewAdapter(api ports.APIPort, port int) *Adapter {
-	return &Adapter{api: api, port: port}
-}
 
 // Run executes an gRPC server instance on a given port
 // in development mode it runs with reflecion enabled.
