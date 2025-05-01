@@ -3,7 +3,7 @@ package payment
 import (
 	"context"
 
-	"github.com/marcpires/ecommerce-grp/payment"
+	"github.com/ecommerce-grpc/payment"
 	"github.com/marcpires/grpc/ecommerce/order/internal/application/core/domain"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -19,7 +19,7 @@ func NewAdapter(paymentServiceURL string) (*Adapter, error) {
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
-	conn, err := grpc.Dial(paymentServiceURL, opts...)
+	conn, err := grpc.NewClient(paymentServiceURL, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -31,17 +31,9 @@ func NewAdapter(paymentServiceURL string) (*Adapter, error) {
 // Charge handles the payment operation, implements the payment port using the payment stub
 func (a *Adapter) Charge(order *domain.Order) error {
 	_, err := a.payment.Create(context.Background(), &payment.CreatePaymentRequest{
-		UserId: order.CustomerID,
-		OrderId: order.ID,
+		UserId:     order.CustomerID,
+		OrderId:    order.ID,
 		TotalPrice: order.TotalPrice(),
 	})
 	return err
-}
-
-func (o *Order) TotalPrice() float32 {
-	var totalPrice float32
-	for _, orderItem := range o.OrderItems {
-		totalPrice += orderItem.UnitPrice * float32(orderItem.Quantity)
-	}
-	return totalPrice
 }

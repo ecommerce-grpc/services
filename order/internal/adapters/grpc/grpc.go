@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 
-	"github.com/marcpires/ecommerce-grpc/order" // service stub
+	"github.com/ecommerce-grpc/order" // service stub
 	"github.com/marcpires/grpc/ecommerce/order/internal/application/core/domain"
 )
 
@@ -13,7 +13,7 @@ func (a Adapter) Create(cxt context.Context,
 	var orderItems []domain.OrderItem
 	// TODO: Update order.proto
 	for _, orderItem := range request.OrderItems {
-		orderItem = append(orderItems, domain.OrderItem{
+		orderItems = append(orderItems, domain.OrderItem{
 			ProductCode: orderItem.ProductCode,
 			UnitPrice:   orderItem.UnitPrice,
 			Quantity:    orderItem.Quantity,

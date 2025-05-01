@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/marcpires/ecommerce-grpc/order" // service stub
+	"github.com/ecommerce-grpc/order" // service stub
 	"github.com/marcpires/grpc/ecommerce/order/config"
 	"github.com/marcpires/grpc/ecommerce/order/internal/ports"
 	"google.golang.org/grpc"
