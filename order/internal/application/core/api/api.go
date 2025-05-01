@@ -30,4 +30,3 @@ func (a Application) PlaceOrder(order domain.Order) (domain.Order, error) {
 	}
 	return order, nil
 }
-
