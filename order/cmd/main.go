@@ -8,6 +8,7 @@ import (
 	"github.com/marcpires/grpc/ecommerce/order/config"
 	"github.com/marcpires/grpc/ecommerce/order/internal/adapters/db"
 	"github.com/marcpires/grpc/ecommerce/order/internal/adapters/grpc"
+	"github.com/marcpires/grpc/ecommerce/order/internal/adapters/payment"
 	"github.com/marcpires/grpc/ecommerce/order/internal/application/core/api"
 )
 
@@ -17,7 +18,12 @@ func main() {
 		log.Fatalf("Failed to connect to database. Error: %v", err)
 	}
 
-	app := api.NewApplication(dbAdapter)
+	paymentAdapter, err := payment.NewAdapter(config.GetPaymentServiceURL())
+	if err != nil {
+		log.Fatalf("Failed to initiate the payment stub. Error: %v", err)
+	}
+
+	app := api.NewApplication(dbAdapter, paymentAdapter)
 	grpcAdapter := grpc.NewAdapter(app, config.GetApplicationPort())
 	grpcAdapter.Run()
 }
