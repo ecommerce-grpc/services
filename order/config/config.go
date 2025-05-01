@@ -6,6 +6,11 @@ import (
 	"strconv"
 )
 
+// GetPaymentServiceURL returns the address of the Payment service.
+func GetPaymentServiceURL() string {
+	return getEnvironmentValue("PAYMENT_SERVICE_URL")
+}
+
 // GetEnv returns the environemnt the application is running.
 func GetEnv() string {
 	return getEnvironmentValue("ENV")
