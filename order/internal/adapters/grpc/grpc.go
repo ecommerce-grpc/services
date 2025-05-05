@@ -23,7 +23,6 @@ func NewAdapter(api ports.APIPort, port int) *Adapter {
 func (a Adapter) Create(cxt context.Context,
 	request *order.CreateOrderRequest) (*order.CreateOrderResponse, error) {
 	var orderItems []domain.OrderItem
-	// TODO: Update order.proto
 	for _, orderItem := range request.OrderItems {
 		orderItems = append(orderItems, domain.OrderItem{
 			ProductCode: orderItem.ProductCode,

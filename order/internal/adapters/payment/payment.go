@@ -17,13 +17,15 @@ type Adapter struct {
 // NewAdapter returns a new payment Adapter using disabled TLS credentials or an error if applicable.
 func NewAdapter(paymentServiceURL string) (*Adapter, error) {
 	var opts []grpc.DialOption
+
+	// add interceptors for unary connections
 	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	conn, err := grpc.NewClient(paymentServiceURL, opts...)
 	if err != nil {
 		return nil, err
 	}
-	// This causes an error as the connection is closed before the Order request is made
+	// This caused an error as the connection is get closed before the service is able to servie an Order.
 	// defer conn.Close()
 	client := payment.NewPaymentClient(conn)
 	return &Adapter{payment: client}, nil
