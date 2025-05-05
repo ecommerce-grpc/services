@@ -2,6 +2,7 @@
 package db
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/marcpires/grpc/ecommerce/order/internal/application/core/domain"
@@ -45,7 +46,7 @@ func NewAdapter(dataSourceUrl string) (*Adapter, error) {
 }
 
 // Get returns an Order information using the adapter instance or an error if applicable.
-func (a Adapter) Get(id string) (domain.Order, error) {
+func (a Adapter) Get(ctx context.Context, id int64) (domain.Order, error) {
 	var orderEntity Order
 	res := a.db.First(&orderEntity, id)
 	var orderItems []domain.OrderItem

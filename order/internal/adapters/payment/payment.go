@@ -23,7 +23,8 @@ func NewAdapter(paymentServiceURL string) (*Adapter, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer conn.Close()
+	// This causes an error as the connection is closed before the Order request is made
+	// defer conn.Close()
 	client := payment.NewPaymentClient(conn)
 	return &Adapter{payment: client}, nil
 }
