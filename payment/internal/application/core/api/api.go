@@ -11,7 +11,7 @@ type Application struct {
 	db ports.DBPort
 }
 
-func NewApplication(db db.DBPort) *Application {
+func NewApplication(db ports.DBPort) *Application {
 	return &Application{
 		db: db,
 	}

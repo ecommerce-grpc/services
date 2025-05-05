@@ -13,7 +13,9 @@ import (
 )
 
 type Adapter struct {
-	api ports.APIPort
+	api  ports.APIPort
+	port int
+	payment.UnimplementedPaymentServer
 }
 
 func (a Adapter) Create(ctx context.Context, request *payment.CreatePaymentRequest) (*payment.CreatePaymentResponse, error) {
@@ -23,5 +25,10 @@ func (a Adapter) Create(ctx context.Context, request *payment.CreatePaymentReque
 	if err != nil {
 		return nil, status.New(codes.Internal, fmt.Sprintf("failed to charge: %v", err)).Err()
 	}
-	return &payment.CreatePaymentResponse{PaymentId: result.ID}, nil
+	// TODO: Update payment.proto and generate new stub
+	return &payment.CreatePaymentResponse{PaymentId: float32(result.ID)}, nil
+}
+
+func NewAdapter(api ports.APIPort, port int) *Adapter {
+	return &Adapter{api: api, port: port}
 }
