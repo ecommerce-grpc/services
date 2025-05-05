@@ -35,7 +35,7 @@ func (a Application) PlaceOrder(order domain.Order) (domain.Order, error) {
 	paymentErr := a.payment.Charge(&order)
 	// Better error handling with more detailed errors
 	if paymentErr != nil {
-		// st, _ := status.FromError(paymentErr)
+		// Message with details may need extact fields for violations separetely
 		st := status.Convert(paymentErr)
 		var allErrors []string
 		for _, detail := range st.Details() {
@@ -48,7 +48,7 @@ func (a Application) PlaceOrder(order domain.Order) (domain.Order, error) {
 		}
 		fieldErr := &errdetails.BadRequest_FieldViolation{
 			Field:       "payment",
-			Description: strings.Join(allErrors,"\n" ),
+			Description: strings.Join(allErrors, "\n"),
 		}
 		badReq := &errdetails.BadRequest{}
 		badReq.FieldViolations = append(badReq.FieldViolations, fieldErr)
