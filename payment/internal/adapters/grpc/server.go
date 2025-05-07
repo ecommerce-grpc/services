@@ -7,6 +7,7 @@ import (
 
 	"github.com/ecommerce-grpc/payment"
 	"github.com/marcpires/grpc/ecommerce/payment/config"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -19,7 +20,10 @@ func (a Adapter) Run() {
 		log.Fatalf("Failed to listen on port %d, error: %v", a.port, err)
 	}
 
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+		grpc.StatsHandler(otelgrpc.NewServerHandler()),
+	)
+
 	payment.RegisterPaymentServer(grpcServer, a)
 	if config.GetEnv() == "development" {
 		reflection.Register(grpcServer)

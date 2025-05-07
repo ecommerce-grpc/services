@@ -22,5 +22,5 @@ run-service:
 	DATA_SOURCE_URL="root:verysecretpassword@tcp(127.0.0.1:3307)/payment" \
 	APPLICATION_PORT="4002" \
 	ENV="development" \
-	TRACER_BACKEND="http://localhost:16686/" \
+	TRACER_BACKEND="http://localhost:16686/api/traces" \
 	go run cmd/main.go
