@@ -3,13 +3,13 @@
 package main
 
 import (
-	"log"
-
 	"github.com/marcpires/grpc/ecommerce/order/config"
 	"github.com/marcpires/grpc/ecommerce/order/internal/adapters/db"
 	"github.com/marcpires/grpc/ecommerce/order/internal/adapters/grpc"
 	"github.com/marcpires/grpc/ecommerce/order/internal/adapters/payment"
 	"github.com/marcpires/grpc/ecommerce/order/internal/application/core/api"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
