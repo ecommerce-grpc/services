@@ -3,6 +3,8 @@ package grpc
 import (
 	"context"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/ecommerce-grpc/order" // service stub
 	"github.com/marcpires/grpc/ecommerce/order/internal/application/core/domain"
 	"github.com/marcpires/grpc/ecommerce/order/internal/ports"
@@ -20,10 +22,11 @@ func NewAdapter(api ports.APIPort, port int) *Adapter {
 }
 
 // Create handles the Order request endpoint
-func (a Adapter) Create(cxt context.Context,
+func (a Adapter) Create(ctx context.Context,
 	request *order.CreateOrderRequest) (*order.CreateOrderResponse, error) {
+	log.WithContext(ctx).Info("Making an order")
+
 	var orderItems []domain.OrderItem
-	// TODO: Update order.proto
 	for _, orderItem := range request.OrderItems {
 		orderItems = append(orderItems, domain.OrderItem{
 			ProductCode: orderItem.ProductCode,
