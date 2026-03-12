@@ -1,0 +1,16 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: payment
+build: # Use build pack
+  artifacts:
+    - image: localhost:5000/ecommerce/payment
+manifests:
+  helm:
+    releases:
+      - name: payment-grpc
+        recreatePods: true
+        skipBuildDependencies: false
+        useHelmSecrets: false
+        wait: false
+        chartPath: ../../charts/payment/
